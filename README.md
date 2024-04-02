@@ -6,12 +6,13 @@
 2. Створюємо директорію для проекту, наприклад WebbyLab
 3. Стягуємо з github код в директорію проекту
 4. Відкриваємо командий рядок, робимо cd WebbyLab
-5. Виконуємо команду docker-compose up -d --build
-6. Виконуємо команду docker-compose exec mysql bash
-7. Виконуємо команду mysql -uroot -proot
-8. Виконуємо команду create database webbylab;
-9. Створюємо 2 таблиці - копіюємо код з файлика app/files/DB_tables.sql
-10. Відкриваємо браузер http://localhost, щоб побачити проект
+5. Виконуємо команду chmod -R 777 app
+6. Виконуємо команду docker-compose up -d --build
+7. Виконуємо команду docker-compose exec mysql bash
+8. Виконуємо команду mysql -uroot -proot
+9. Виконуємо команду create database webbylab;
+10. Створюємо 2 таблиці - копіюємо код з файлика app/files/DB_tables.sql
+11. Відкриваємо браузер http://localhost, щоб побачити проект
 
 
 2.АРХІТЕКТУРА ВЕБ-ПРОГРАМИ
