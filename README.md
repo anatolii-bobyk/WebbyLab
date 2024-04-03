@@ -11,8 +11,9 @@
 7. Виконуємо команду docker-compose exec mysql bash
 8. Виконуємо команду mysql -uroot -proot
 9. Виконуємо команду create database webbylab;
-10. Створюємо 2 таблиці - копіюємо код з файлика app/files/DB_tables.sql
-11. Відкриваємо браузер http://localhost, щоб побачити проект
+10. Виконуємо команду use webbylab;
+11. Створюємо 2 таблиці - копіюємо код з файлика app/files/DB_tables.sql
+12. Відкриваємо браузер http://localhost, щоб побачити проект
 
 
 2.АРХІТЕКТУРА ВЕБ-ПРОГРАМИ

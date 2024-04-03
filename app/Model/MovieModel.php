@@ -116,23 +116,40 @@ class MovieModel
     {
         $openedFile = fopen($file_path, 'r');
         if ($openedFile) {
-            $movie_data = [];
+            $existing_movies = $this->getAllMoviesTitles();
+
             while (($line = fgets($openedFile)) !== false) {
                 $line = trim($line);
+
                 if (!empty($line)) {
                     list($key, $value) = explode(': ', $line, 2);
                     $movie_data[$key] = $value;
                 } elseif (!empty($movie_data)) {
-                    $this->addMovie(
-                        $movie_data['Title'],
-                        $movie_data['Release Year'],
-                        $movie_data['Format'],
-                        $movie_data['Stars']
-                    );
+                    if (!in_array($movie_data['Title'], $existing_movies)) {
+                        $this->addMovie(
+                            $movie_data['Title'],
+                            $movie_data['Release Year'],
+                            $movie_data['Format'],
+                            $movie_data['Stars']
+                        );
+                    }
                     $movie_data = [];
                 }
             }
             fclose($openedFile);
         }
     }
+
+    /**
+     * @return mixed
+     */
+    private function getAllMoviesTitles()
+    {
+        $query = "SELECT title FROM movies";
+        $statement = $this->connection->prepare($query);
+        $statement->execute();
+        $titles = $statement->fetchAll(PDO::FETCH_COLUMN);
+        return $titles;
+    }
+
 }

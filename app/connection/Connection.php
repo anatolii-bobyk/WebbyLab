@@ -7,9 +7,6 @@ class Connection
      */
     public static $connection = false;
 
-    /**
-     *
-     */
     private function __construct()
     {
 

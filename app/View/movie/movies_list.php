@@ -1,5 +1,6 @@
 <?php
 include 'Helper/auth.php';
+include 'Helper/error_message.php';
 ?>
 
 <!DOCTYPE html>

@@ -43,10 +43,29 @@ class MovieController
             return "Something went wrong";
         }
 
-        $title = $_POST['title'];
+        $title = trim($_POST['title']);
         $release_year = $_POST['release_year'];
         $format = $_POST['format'];
         $stars = $_POST['stars'];
+        $current_year = date("Y");
+        $existing_movie = $this->movieModel->searchMovieByTitle($title);
+        $error_message = '';
+
+        if (empty($title)) {
+            $error_message = "Title cannot be empty.";
+        } elseif (!preg_match('/^[A-Za-z\s\-,]+$/', $stars)) {
+            $error_message = "Invalid characters in stars field.";
+        } elseif ($release_year < 1900 || $release_year > $current_year) {
+            $error_message = "Invalid release year.";
+        } elseif (!empty($existing_movie)) {
+            $error_message = "Movie with the same title already exists.";
+        }
+
+        if (!empty($error_message)) {
+            include('View/movie/add_movie_form.php');
+            return;
+        }
+
         $result = $this->movieModel->addMovie($title, $release_year, $format, $stars);
         if ($result) {
             header('Location: /movies_list');
@@ -128,20 +147,27 @@ class MovieController
         return $movies;
     }
 
+
     /**
-     * @param $file_path
-     * @return string
+     * @return mixed|void
      */
     public function importMoviesFromTextFile()
     {
+        $movies = $this->movieModel->getAllMovies();
         if (isset($_POST["submit"])) {
             $target_dir = "uploads/";
             $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+            $file_extension = pathinfo($_FILES["fileToUpload"]["name"], PATHINFO_EXTENSION);
+
+            if ($file_extension !== 'txt' || $_FILES["fileToUpload"]["size"] == 0) {
+                $error_message = ($file_extension !== 'txt') ? "Only txt files are allowed." : "Uploaded file is empty.";
+                include('View/movie/movies_list.php');
+                return $this->movieModel->getAllMovies();
+            }
+
             move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file);
+            $this->movieModel->importMoviesFromTextFile($target_file);
+            header('Location: /movies_list');
         }
-
-        $this->movieModel->importMoviesFromTextFile($target_file);
-        header('Location: /movies_list');
-
     }
 }
